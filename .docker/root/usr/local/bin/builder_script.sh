@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# echo "**** Adding user ****"
-# usermod --password $(echo "$USER_PASSWORD") user
-# usermod --password $(echo "$USER_PASSWORD" | openssl passwd -1 -stdin) user
-
 echo "**** Install DEV Essentials ****"
 
 # Installing NVM

@@ -1,9 +1,10 @@
 FROM ubuntu:latest
 
 # ENVIROMENT
-ARG USERNAME='user'
-ARG USER_PASSWORD='user'
-ARG DEFAULT_WORKSPACE='config'
+ARG USERNAME="user"
+ARG USER_PASSWORD="user"
+ARG DEFAULT_WORKSPACE="config"
+ARG ROOT="../.docker/root"
 
 ENV HOME="/config"
 
@@ -28,7 +29,7 @@ RUN \
     sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
 # add local files
-COPY .docker/root /
+COPY ${ROOT} /
 
 RUN \
     echo "**** Adding user ****" && \

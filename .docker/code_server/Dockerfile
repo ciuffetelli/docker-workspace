@@ -4,6 +4,8 @@ FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
 ARG BUILD_DATE
 ARG VERSION
 ARG CODE_RELEASE
+ARG ROOT="../.docker/root"
+
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="aptalca"
 
@@ -37,7 +39,7 @@ RUN \
   /app/code-server --strip-components=1
 
 # add local files
-COPY .docker/root /
+COPY ${ROOT} /
 
 # Call Builder script
 RUN \
