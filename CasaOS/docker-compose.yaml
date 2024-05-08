@@ -1,29 +1,56 @@
 name: my-workspace
-version: "3"
-
+version: '3'
 services:
   code_server:
-    image: ghcr.io/ciuffetelli/myworkspace/code-server:latest
-    ports:
-      - "8443:8443"
+    container_name: my_workspace_code_server
     environment:
-      - TZ=UTC
+      - DEFAULT_WORKSPACE=/config
       - HOME=/config
       - SUDO_PASSWORD=casaos
-      - DEFAULT_WORKSPACE=/config #optional
-    volumes:
-      - ./config:/config
-    container_name: my_workspace_code_server
-  ssh:
-    image: ghcr.io/ciuffetelli/myworkspace/open-ssh:latest
-    ports:
-      - "2222:22"   #SSH
-    environment:
       - TZ=UTC
-      - HOME=/root
-      - USERNAME=casaos
-      - USER_PASSWORD=casaos
-      - DEFAULT_WORKSPACE=/config #optional
+    hostname: my_workspace_code_server
+    image: ghcr.io/ciuffetelli/myworkspace/code-server:latest
+    labels:
+      icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/code-server.png
+    ports:
+      - target: 8443
+        published: "8443"
+        protocol: tcp
+    restart: unless-stopped
     volumes:
-      - ./config:/config
+      - type: bind
+        source: /DATA/AppData/myworkspace/config
+        target: /config
+  ssh:
     container_name: my_workspace_ssh
+    environment:
+      - DEFAULT_WORKSPACE=/config
+      - HOME=/root
+      - TZ=UTC
+      - USER_PASSWORD=casaos
+      - USERNAME=casaos
+    hostname: my_workspace_ssh
+    image: ghcr.io/ciuffetelli/myworkspace/open-ssh:latest
+    labels:
+      icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/code-server.png
+    ports:
+      - target: 22
+        published: "2222"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /DATA/AppData/myworkspace/config
+        target: /config
+x-casaos:
+  author: self
+  category: self
+  hostname: ""
+  icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/code-server.png
+  index: /
+  is_uncontrolled: false
+  port_map: "9443"
+  scheme: http
+  store_app_id: my-workspace
+  title:
+    custom: My Workspace
